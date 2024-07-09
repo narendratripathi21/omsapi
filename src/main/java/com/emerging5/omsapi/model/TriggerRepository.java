@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProcessRepository extends JpaRepository<Process, Long> {
-           
+public interface TriggerRepository extends JpaRepository<Trigger, Long>{
+
 }

@@ -23,14 +23,15 @@ public class Task {
     private Long id;
     private String name;
     private Long dependsonTaskid;
-    private boolean status;
+    private int status;
     private String msg;
+    private boolean active;
 
     public Long getId() {
         return id;
     }
     
-    public Task(Long id, String name, Long dependsonTaskid, boolean status, String msg) {
+    public Task(Long id, String name, Long dependsonTaskid, int status, String msg) {
         this.id = id;
         this.name = name;
         this.dependsonTaskid = dependsonTaskid;
@@ -53,17 +54,24 @@ public class Task {
     public void setDependsonTaskid(Long dependsonTaskid) {
         this.dependsonTaskid = dependsonTaskid;
     }
-    public boolean isStatus() {
-        return status;
-    }
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
+    
     public String getMsg() {
         return msg;
     }
     public void setMsg(String msg) {
         this.msg = msg;
     }
-       
+    public boolean isActive() {
+        return active;
+    }
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+    public int getStatus() {
+        return status;
+    }
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
 }
