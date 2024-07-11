@@ -8,6 +8,7 @@ import com.emerging5.omsapi.model.Trigger;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,11 +35,13 @@ public class ProcessController {
         
     }
 
-    @PostMapping("api/process")
+    @PostMapping("api/addProcess")
     public Process addProcess(@RequestBody Process process) {
-        
-        
-        return process;
+        Process proc = processService.addProcess(process);
+        if(proc==null){
+            throw(new IllegalStateException("Unable to add"));
+        }
+        return proc;
     }
     
 }

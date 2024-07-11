@@ -1,11 +1,14 @@
 package com.emerging5.omsapi.model;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -25,18 +28,18 @@ public class Process {
     private Long id;
     private String name;
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Trigger trigger;
     
-    @OneToMany
-    private Task[] tasks;
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    private List<Task> tasks;
     private boolean status;
     private String msg;
 
     public Process() {
     }
 
-    public Process(Long id, String name, Trigger trigger, Task[] tasks, boolean status, String msg) {
+    public Process(Long id, String name, Trigger trigger, List<Task> tasks, boolean status, String msg) {
         this.id = id;
         this.name = name;
         this.trigger = trigger;
@@ -63,10 +66,10 @@ public class Process {
     public void setTrigger(Trigger trigger) {
         this.trigger = trigger;
     }
-    public Task[] getTasks() {
+    public List<Task> getTasks() {
         return tasks;
     }
-    public void setTasks(Task[] tasks) {
+    public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
     }
     public boolean isStatus() {

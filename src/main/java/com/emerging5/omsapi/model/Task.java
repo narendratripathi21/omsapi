@@ -1,9 +1,11 @@
 package com.emerging5.omsapi.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -22,6 +24,8 @@ public class Task {
     )
     private Long id;
     private String name;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Agent agent;
     private Long dependsonTaskid;
     private int status;
     private String msg;
@@ -73,5 +77,4 @@ public class Task {
     public void setStatus(int status) {
         this.status = status;
     }
-
 }
