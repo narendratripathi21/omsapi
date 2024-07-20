@@ -1,16 +1,23 @@
 package com.emerging5.omsapi.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table
+@Table(
+    uniqueConstraints = @UniqueConstraint(columnNames = {"hostname"})
+)
 public class Agent {
     @Id
     @SequenceGenerator(
@@ -26,7 +33,7 @@ public class Agent {
     private String hostname;
     private boolean active;
     private int taskscompleted;
-    private int tasksfailed;
+    private int tasksfailed;                                                                        
     private float taskacpu;
     private float taskaram;
     private float storage; 
@@ -34,15 +41,17 @@ public class Agent {
     private LocalDateTime registereddatetime;
     private LocalDateTime lastactivedatetime;
     private LocalDateTime lastupdatedatetime;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="agentid",referencedColumnName = "id")
+    private List<Task> tasks; 
 
     public Agent() {
     }
 
-    public Agent(String hostname, boolean active, String currentversion, LocalDateTime registereddatetime) {
+    public Agent(String hostname, String currentversion) {
         this.hostname = hostname;
-        this.active = active;
+        this.active = true;
         this.currentversion = currentversion;
-        this.registereddatetime = registereddatetime;
     }
 
     public Long getId() {
@@ -140,7 +149,14 @@ public class Agent {
     public void setLastupdatedatetime(LocalDateTime lastupdatedatetime) {
         this.lastupdatedatetime = lastupdatedatetime;
     }
-    
-    
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
     
 }

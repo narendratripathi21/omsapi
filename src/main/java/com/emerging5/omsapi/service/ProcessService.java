@@ -1,8 +1,8 @@
 package com.emerging5.omsapi.service;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.emerging5.omsapi.model.Process;
@@ -21,6 +21,10 @@ public class ProcessService {
         return processRepository.findAll();
     }
 
+    public Optional<Process> getProcess(Long id){
+        return processRepository.findById(id);
+    }
+
     public Process addProcess(Process process){
         try{
             if(CommonService.isValidString(process.getName())
@@ -34,5 +38,12 @@ public class ProcessService {
         }
     }
 
-    
+    public void deleteProcess(Long id){
+        if(getProcess(id).isPresent()){
+            processRepository.deleteById(id);
+        }
+        else{
+            throw new IllegalStateException("Process with id:"+id+", does not exist.");
+        }
+    }
 }
