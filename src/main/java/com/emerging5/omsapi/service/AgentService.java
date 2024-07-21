@@ -3,6 +3,12 @@ package com.emerging5.omsapi.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatcher;
+import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 
 import com.emerging5.omsapi.model.Agent;
@@ -14,29 +20,41 @@ import jakarta.transaction.Transactional;
 public class AgentService {
     
     public final AgentRepository agentRepository;
+    
+    private ExampleMatcher modelMatcher = ExampleMatcher.matching()
+        .withIgnorePaths("id") 
+        .withMatcher("hostname",GenericPropertyMatcher.of(StringMatcher.DEFAULT, true));
 
     public AgentService(AgentRepository agentRepository){
         this.agentRepository = agentRepository;
     }
-
+  
     public List<Agent> getAgents(){
         return agentRepository.findAll();
     }
 
     public Agent getAgent(Long id){
-        return agentRepository.findById(id).orElseThrow(()-> new IllegalStateException("Agent with id "+id+" does not exist"));
+        return agentRepository.findById(id).orElse(null);
     }
 
     public Agent getAgentByHostname(String hostname){
         List<Agent> agentsByHostname = agentRepository.findByHostname(hostname).stream().filter(x-> x.isActive()).toList();
-        if(agentsByHostname.isEmpty()) throw new IllegalStateException("Agent with hostname "+hostname+" does not exist");
+        if(agentsByHostname.isEmpty()) return null;
         return agentsByHostname.get(0);
     }
 
     public Agent addAgent(Agent agent){
-        agent.setRegistereddatetime(LocalDateTime.now());
-        agent.setLastactivedatetime(LocalDateTime.now());
-        return agentRepository.save(agent);
+        Example<Agent> example = Example.of(agent, modelMatcher);
+        Agent tempAgent = null;
+        if(agentRepository.exists(example)){
+            tempAgent = getAgentByHostname(agent.getHostname());
+        }
+        else{
+            agent.setRegistereddatetime(LocalDateTime.now());
+            agent.setLastactivedatetime(LocalDateTime.now());
+            tempAgent = agentRepository.save(agent);
+        }
+        return tempAgent;
     }
 
     @Transactional

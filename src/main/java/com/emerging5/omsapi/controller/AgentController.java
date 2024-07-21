@@ -31,12 +31,11 @@ public class AgentController {
         return agentService.getAgent(id);
     }
 
-    @GetMapping(path="/getAgent/{hostname}")
+    @GetMapping(path="/getAgentByHostName/{hostname}")
     public Agent getAgent(@PathVariable("hostname") String hostname) {
         return agentService.getAgentByHostname(hostname);
     }
     
-
     @GetMapping(path="/getAgents")
     public List<Agent> getAgents() {
         return agentService.getAgents();
@@ -53,8 +52,8 @@ public class AgentController {
     }
     
     @PostMapping(path="/setAgentProps/{id}")
-    public void setAgentProps(@PathVariable("id") Long id,@RequestBody int taskscompleted,@RequestBody int tasksfailed,@RequestBody float taskacpu,@RequestBody float taskaram,@RequestBody float storage){
-        agentService.setAgentProps(id, taskscompleted, tasksfailed, taskacpu, taskaram, storage);
+    public void setAgentProps(@PathVariable("id") Long id,@RequestBody Agent agent){
+        agentService.setAgentProps(id, agent.getTaskscompleted(), agent.getTasksfailed(), agent.getTaskacpu(), agent.getTaskaram(), agent.getStorage());
     }
 
     @DeleteMapping(path="/deleteAgent/{id}")
