@@ -7,7 +7,6 @@ import java.util.Objects;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatcher;
-import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 
@@ -38,22 +37,14 @@ public class AgentService {
     }
 
     public Agent getAgentByHostname(String hostname){
-        List<Agent> agentsByHostname = agentRepository.findByHostname(hostname).stream().filter(x-> x.isActive()).toList();
-        if(agentsByHostname.isEmpty()) return null;
-        return agentsByHostname.get(0);
+        return agentRepository.findByHostname(hostname).stream().findFirst().orElse(new Agent(hostname,""));
     }
 
     public Agent addAgent(Agent agent){
-        Example<Agent> example = Example.of(agent, modelMatcher);
         Agent tempAgent = null;
-        if(agentRepository.exists(example)){
-            tempAgent = getAgentByHostname(agent.getHostname());
-        }
-        else{
-            agent.setRegistereddatetime(LocalDateTime.now());
-            agent.setLastactivedatetime(LocalDateTime.now());
-            tempAgent = agentRepository.save(agent);
-        }
+        agent.setRegistereddatetime(LocalDateTime.now());
+        agent.setLastactivedatetime(LocalDateTime.now());
+        tempAgent = agentRepository.save(agent);
         return tempAgent;
     }
 
