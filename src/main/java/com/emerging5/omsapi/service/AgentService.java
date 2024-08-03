@@ -4,13 +4,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatcher;
-import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 
 import com.emerging5.omsapi.model.Agent;
+import com.emerging5.omsapi.model.Task;
 import com.emerging5.omsapi.model.AgentRepository;
 
 import jakarta.transaction.Transactional;
@@ -20,10 +17,6 @@ public class AgentService {
     
     public final AgentRepository agentRepository;
     
-    private ExampleMatcher modelMatcher = ExampleMatcher.matching()
-        .withIgnorePaths("id") 
-        .withMatcher("hostname",GenericPropertyMatcher.of(StringMatcher.DEFAULT, true));
-
     public AgentService(AgentRepository agentRepository){
         this.agentRepository = agentRepository;
     }
@@ -76,6 +69,14 @@ public class AgentService {
         if(agent.isActive()!=active){
             agent.setActive(active);
         }
+    }
+
+    public List<Task> getTasks(Long id){
+        Agent agent = getAgent(id);
+        if(agent != null){
+            return agent.getTasks();
+        }
+        return null;
     }
 
 }

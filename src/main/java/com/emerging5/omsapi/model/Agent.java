@@ -19,7 +19,7 @@ import jakarta.persistence.UniqueConstraint;
     uniqueConstraints = @UniqueConstraint(columnNames = {"hostname"})
 )
 public class Agent {
-    @Id
+            
     @SequenceGenerator(
         name="agent_id_sequence",
         sequenceName = "agent_id_sequence",
@@ -29,6 +29,7 @@ public class Agent {
         strategy = GenerationType.SEQUENCE,
         generator = "agent_id_sequence"
     )
+    @Id
     private Long id;
     private String hostname;
     private boolean active;
@@ -49,7 +50,7 @@ public class Agent {
     }
 
     public Agent(String hostname, String currentversion) {
-        this.hostname = hostname;
+        this.hostname = hostname;   
         this.active = true;
         this.currentversion = currentversion;
     }

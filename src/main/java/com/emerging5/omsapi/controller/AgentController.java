@@ -3,6 +3,7 @@ package com.emerging5.omsapi.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.emerging5.omsapi.model.Agent;
+import com.emerging5.omsapi.model.Task;
 import com.emerging5.omsapi.service.AgentService;
 
 import java.util.List;
@@ -35,6 +36,11 @@ public class AgentController {
     public Agent getAgent(@PathVariable("hostname") String hostname) {
         return agentService.getAgentByHostname(hostname);
     }
+
+    @GetMapping(path="/getTasks/{id}")
+    public List<Task> getTasks(@PathVariable("id") Long id) {
+        return agentService.getTasks(id);
+    }
     
     @GetMapping(path="/getAgents")
     public List<Agent> getAgents() {
@@ -60,5 +66,5 @@ public class AgentController {
     public void deleteAgent(@PathVariable("id") Long id){
         agentService.setActive(id, false);
     }
-
+    
 }
