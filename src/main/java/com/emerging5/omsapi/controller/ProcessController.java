@@ -43,4 +43,16 @@ public class ProcessController {
         }
         return proc;
     }
+
+    @PostMapping("/deleteProcess/{id}")
+    public boolean deleteProcess(@PathVariable Long id) {
+        if(processService.getProcess(null)!=null){
+            processService.deleteProcess(id);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
 }

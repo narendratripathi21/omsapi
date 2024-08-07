@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.emerging5.omsapi.model.Process;
 import com.emerging5.omsapi.model.ProcessRepository;
+import com.emerging5.omsapi.model.Trigger;
 
 @Service
 public class ProcessService {
@@ -38,6 +39,9 @@ public class ProcessService {
         }
     }
 
+    public void updateProcess(Long id, String name, Trigger trigger,  ){
+
+    }
     public void deleteProcess(Long id){
         if(getProcess(id).isPresent()){
             processRepository.deleteById(id);
