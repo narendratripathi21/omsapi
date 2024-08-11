@@ -1,5 +1,6 @@
 package com.emerging5.omsapi.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -34,7 +35,14 @@ public class Process {
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "processes")
     private List<Task> tasks;
     private boolean status;
+    private boolean active;
     private String msg;
+    private LocalDateTime createddatetime;
+    private LocalDateTime modifiedatetime;
+    private LocalDateTime lastrundatetime;
+    private int numruns;
+    private int numsuccess;
+    private int runtimeminutes;
 
     public Process() {
     }
@@ -83,6 +91,48 @@ public class Process {
     }
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+    public LocalDateTime getCreateddatetime() {
+        return createddatetime;
+    }
+    public void setCreateddatetime(LocalDateTime createddatetime) {
+        this.createddatetime = createddatetime;
+    }
+    public LocalDateTime getModifiedatetime() {
+        return modifiedatetime;
+    }
+    public void setModifiedatetime(LocalDateTime modifiedatetime) {
+        this.modifiedatetime = modifiedatetime;
+    }
+    public LocalDateTime getLastrundatetime() {
+        return lastrundatetime;
+    }
+    public void setLastrundatetime(LocalDateTime lastrundatetime) {
+        this.lastrundatetime = lastrundatetime;
+    }
+    public int getNumruns() {
+        return numruns;
+    }
+    public void setNumruns(int numruns) {
+        this.numruns = numruns;
+    }
+    public int getNumsuccess() {
+        return numsuccess;
+    }
+    public void setNumsuccess(int numsuccess) {
+        this.numsuccess = numsuccess;
+    }
+    public int getRuntimeminutes() {
+        return runtimeminutes;
+    }
+    public void setRuntimeminutes(int runtimeminutes) {
+        this.runtimeminutes = runtimeminutes;
+    }
+    public boolean isActive() {
+        return active;
+    }
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
 }

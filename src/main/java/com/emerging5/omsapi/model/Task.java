@@ -92,6 +92,5 @@ public class Task {
     public void setAgent(Agent agent) {
         this.agent = agent;
     }
-
-    
+        
 }

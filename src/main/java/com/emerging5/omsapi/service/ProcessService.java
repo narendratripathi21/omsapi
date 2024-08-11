@@ -1,13 +1,12 @@
 package com.emerging5.omsapi.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.emerging5.omsapi.model.Process;
 import com.emerging5.omsapi.model.ProcessRepository;
-import com.emerging5.omsapi.model.Trigger;
 
 @Service
 public class ProcessService {
@@ -22,28 +21,39 @@ public class ProcessService {
         return processRepository.findAll();
     }
 
-    public Optional<Process> getProcess(Long id){
-        return processRepository.findById(id);
+    public Process getProcess(Long id){
+        return processRepository.findById(id).orElse(null);
+    }
+
+    public Process getProcessByName(String name){
+        return processRepository.findByName(name).stream().findFirst().orElse(new Process());
     }
 
     public Process addProcess(Process process){
         try{
             if(CommonService.isValidString(process.getName())
-                && !process.getTasks().isEmpty())
+                && !process.getTasks().isEmpty() && getProcessByName(process.getName()).getId()==null){
+                process.setCreateddatetime(LocalDateTime.now());
                 return processRepository.save(process);
-            else
+            }
+            else{
                 return null;
+            }
         }
         catch(Exception ex){
             return null;
         }
     }
 
-    public void updateProcess(Long id, String name, Trigger trigger,  ){
+    public void updateProcess(Long id, String name){
+        Process temProcess = processRepository.findById(id).orElse(null);
+        if(temProcess != null){
 
+        }
     }
+
     public void deleteProcess(Long id){
-        if(getProcess(id).isPresent()){
+        if(getProcess(id)!=null){
             processRepository.deleteById(id);
         }
         else{

@@ -46,9 +46,11 @@ public class AgentService {
         Agent agent = agentRepository.findById(id).orElseThrow(()->new IllegalStateException("Agent with id "+ id +" does not exists"));
         if(hostname!=null && CommonService.isValidString(hostname) && !Objects.equals(agent.getHostname(),hostname)){
             agent.setHostname(hostname);
+            agent.setLastupdatedatetime(LocalDateTime.now());
         }
         if(currentversion!=null && CommonService.isValidString(currentversion) && !Objects.equals(agent.getCurrentversion(),currentversion)){
             agent.setCurrentversion(currentversion);
+            agent.setLastupdatedatetime(LocalDateTime.now());
         }
     }
     
@@ -64,11 +66,10 @@ public class AgentService {
     }
     
     @Transactional
-    public void setActive(Long id,boolean active){
+    public void toggleActive(Long id){
         Agent agent = agentRepository.findById(id).orElseThrow(()->new IllegalStateException("Agent with id "+ id +" does not exists"));
-        if(agent.isActive()!=active){
-            agent.setActive(active);
-        }
+        agent.setLastupdatedatetime(LocalDateTime.now());
+        agent.setActive(!agent.isActive());
     }
 
     public List<Task> getTasks(Long id){
@@ -79,5 +80,4 @@ public class AgentService {
         return null;
     }
 
-    
 }

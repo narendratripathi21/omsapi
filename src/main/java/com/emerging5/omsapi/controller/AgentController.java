@@ -28,17 +28,17 @@ public class AgentController {
     }
 
     @GetMapping(path="/getAgent/{id}")
-    public Agent getAgent(@PathVariable("id") Long id) {
+    public Agent getAgent(@PathVariable Long id) {
         return agentService.getAgent(id);
     }
 
     @GetMapping(path="/getAgentByHostName/{hostname}")
-    public Agent getAgent(@PathVariable("hostname") String hostname) {
+    public Agent getAgent(@PathVariable String hostname) {
         return agentService.getAgentByHostname(hostname);
     }
 
     @GetMapping(path="/getTasks/{id}")
-    public List<Task> getTasks(@PathVariable("id") Long id) {
+    public List<Task> getTasks(@PathVariable Long id) {
         return agentService.getTasks(id);
     }
     
@@ -53,18 +53,18 @@ public class AgentController {
     }
 
     @PostMapping(path="/updateAgent/{id}")
-    public void updateAgent(@PathVariable("id") Long id, @RequestBody(required = false) String hostname, @RequestBody(required = false) String currentversion){
+    public void updateAgent(@PathVariable Long id, @RequestBody(required = false) String hostname, @RequestBody(required = false) String currentversion){
         agentService.updateAgent(id, hostname, currentversion);
     }
     
     @PostMapping(path="/setAgentProps/{id}")
-    public void setAgentProps(@PathVariable("id") Long id,@RequestBody Agent agent){
+    public void setAgentProps(@PathVariable Long id,@RequestBody Agent agent){
         agentService.setAgentProps(id, agent.getTaskscompleted(), agent.getTasksfailed(), agent.getTaskacpu(), agent.getTaskaram(), agent.getStorage());
     }
 
-    @DeleteMapping(path="/deleteAgent/{id}")
-    public void deleteAgent(@PathVariable("id") Long id){
-        agentService.setActive(id, false);
+    @DeleteMapping(path="/toggleActive/{id}")
+    public void toggleActive(@PathVariable Long id){
+        agentService.toggleActive(id);
     }
     
 }
