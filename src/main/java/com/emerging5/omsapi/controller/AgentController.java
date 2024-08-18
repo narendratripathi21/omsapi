@@ -8,19 +8,22 @@ import com.emerging5.omsapi.service.AgentService;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
 @RequestMapping(path="/api/agent")
 public class AgentController {
 
+    private Logger logger = LoggerFactory.getLogger(AgentController.class);
     private final AgentService agentService;
 
     public AgentController(AgentService agentService){
@@ -53,7 +56,8 @@ public class AgentController {
     }
 
     @PostMapping(path="/updateAgent/{id}")
-    public void updateAgent(@PathVariable Long id, @RequestBody(required = false) String hostname, @RequestBody(required = false) String currentversion){
+    public void updateAgent(@PathVariable Long id, @RequestParam(required = false) String hostname, @RequestParam(required = false) String currentversion){
+        logger.info("Hostname:{}|CurrentVersion:{}",hostname,currentversion);
         agentService.updateAgent(id, hostname, currentversion);
     }
     
@@ -62,7 +66,7 @@ public class AgentController {
         agentService.setAgentProps(id, agent.getTaskscompleted(), agent.getTasksfailed(), agent.getTaskacpu(), agent.getTaskaram(), agent.getStorage());
     }
 
-    @DeleteMapping(path="/toggleActive/{id}")
+    @PostMapping(path="/toggleActive/{id}")
     public void toggleActive(@PathVariable Long id){
         agentService.toggleActive(id);
     }

@@ -12,6 +12,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table
@@ -44,6 +45,11 @@ public class Process {
     private int numsuccess;
     private int runtimeminutes;
 
+    @Transient
+    private String message;
+    @Transient
+    private boolean txnstatus;
+
     public Process() {
     }
 
@@ -56,6 +62,11 @@ public class Process {
         this.msg = msg;
     }
 
+    public Process(String message, boolean status){
+        this.message = message;
+        this.txnstatus = status;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -131,8 +142,24 @@ public class Process {
     public boolean isActive() {
         return active;
     }
+
     public void setActive(boolean active) {
         this.active = active;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public boolean isTxnstatus() {
+        return txnstatus;
+    }
+
+    public void setTxnstatus(boolean txnstatus) {
+        this.txnstatus = txnstatus;
+    }
 }

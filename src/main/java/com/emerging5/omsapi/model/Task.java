@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table
@@ -38,10 +39,18 @@ public class Task {
     private String msg;
     private boolean active;
 
+    @Transient
+    private String message;
+    @Transient
+    private boolean txnstatus;
+
     public Long getId() {
         return id;
     }
     
+    public Task(){
+
+    }
     public Task(Long id, String name, Long dependsonTaskid, int status, String msg) {
         this.id = id;
         this.name = name;
@@ -49,6 +58,12 @@ public class Task {
         this.status = status;
         this.msg = msg;
     }
+
+    public Task(String message, boolean status){
+        this.message = message;
+        this.txnstatus = status;
+    }
+    
 
     public void setId(Long id) {
         this.id = id;
@@ -65,7 +80,6 @@ public class Task {
     public void setDependsonTaskid(Long dependsonTaskid) {
         this.dependsonTaskid = dependsonTaskid;
     }
-    
     public String getMsg() {
         return msg;
     }
@@ -84,13 +98,25 @@ public class Task {
     public void setStatus(int status) {
         this.status = status;
     }
-
-    public Agent getAgent() {
-        return agent;
-    }
-
     public void setAgent(Agent agent) {
         this.agent = agent;
     }
-        
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public boolean isTxnstatus() {
+        return txnstatus;
+    }
+
+    public void setTxnstatus(boolean txnstatus) {
+        this.txnstatus = txnstatus;
+    }   
+
+    
 }

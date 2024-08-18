@@ -37,22 +37,12 @@ public class ProcessController {
 
     @PostMapping("/addProcess")
     public Process addProcess(@RequestBody Process process) {
-        Process proc = processService.addProcess(process);
-        if(proc==null){
-            throw(new IllegalStateException("Unable to add"));
-        }
-        return proc;
+        return processService.addProcess(process);
     }
 
-    @PostMapping("/deleteProcess/{id}")
-    public boolean deleteProcess(@PathVariable Long id) {
-        if(processService.getProcess(null)!=null){
-            processService.deleteProcess(id);
-            return true;
-        }
-        else{
-            return false;
-        }
+    @PostMapping("/toggleActive/{id}")
+    public Process toggleActive(@PathVariable Long id) {
+        return processService.toggleActive(id);
     }
-    
+
 }

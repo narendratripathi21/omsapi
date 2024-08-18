@@ -34,24 +34,27 @@ public class AgentService {
     }
 
     public Agent addAgent(Agent agent){
-        Agent tempAgent = null;
+        Agent tempAgent = new Agent();
         agent.setRegistereddatetime(LocalDateTime.now());
         agent.setLastactivedatetime(LocalDateTime.now());
         tempAgent = agentRepository.save(agent);
+        //tempAgent.setTxnstatus(true);
+        //tempAgent.setMessage(CommonService.getMessage("created",this.getClass(),""));
         return tempAgent;
     }
 
     @Transactional
-    public void updateAgent(Long id,String hostname,  String currentversion){
-        Agent agent = agentRepository.findById(id).orElseThrow(()->new IllegalStateException("Agent with id "+ id +" does not exists"));
-        if(hostname!=null && CommonService.isValidString(hostname) && !Objects.equals(agent.getHostname(),hostname)){
+    public Agent updateAgent(Long id,String hostname,  String currentversion){
+        Agent agent = agentRepository.findById(id).orElse(null);
+        if(agent!=null && hostname!=null && CommonService.isValidString(hostname) && !Objects.equals(agent.getHostname(),hostname)){
             agent.setHostname(hostname);
             agent.setLastupdatedatetime(LocalDateTime.now());
         }
-        if(currentversion!=null && CommonService.isValidString(currentversion) && !Objects.equals(agent.getCurrentversion(),currentversion)){
+        if(agent!=null && currentversion!=null && CommonService.isValidString(currentversion) && !Objects.equals(agent.getCurrentversion(),currentversion)){
             agent.setCurrentversion(currentversion);
             agent.setLastupdatedatetime(LocalDateTime.now());
         }
+        return agent;
     }
     
     @Transactional
@@ -66,10 +69,13 @@ public class AgentService {
     }
     
     @Transactional
-    public void toggleActive(Long id){
-        Agent agent = agentRepository.findById(id).orElseThrow(()->new IllegalStateException("Agent with id "+ id +" does not exists"));
-        agent.setLastupdatedatetime(LocalDateTime.now());
-        agent.setActive(!agent.isActive());
+    public Agent toggleActive(Long id){
+        Agent agent = agentRepository.findById(id).orElse(null);
+        if(agent!=null){
+            agent.setLastupdatedatetime(LocalDateTime.now());
+            agent.setActive(!agent.isActive());
+        }
+        return agent;
     }
 
     public List<Task> getTasks(Long id){

@@ -13,6 +13,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(
@@ -46,6 +47,11 @@ public class Agent {
     @JoinColumn(name="agentid",referencedColumnName = "id")
     private List<Task> tasks; 
 
+    @Transient
+    private String message;
+    @Transient
+    private boolean txnstatus;
+
     public Agent() {
     }
 
@@ -55,6 +61,11 @@ public class Agent {
         this.currentversion = currentversion;
     }
 
+    public Agent(String message, boolean status){
+        this.message = message;
+        this.txnstatus = status;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -157,6 +168,22 @@ public class Agent {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public boolean isTxnstatus() {
+        return txnstatus;
+    }
+
+    public void setTxnstatus(boolean txnstatus) {
+        this.txnstatus = txnstatus;
     }
 
     

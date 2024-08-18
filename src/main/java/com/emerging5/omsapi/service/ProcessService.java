@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.emerging5.omsapi.model.Process;
 import com.emerging5.omsapi.model.ProcessRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class ProcessService {
 
@@ -52,12 +54,13 @@ public class ProcessService {
         }
     }
 
-    public void deleteProcess(Long id){
-        if(getProcess(id)!=null){
-            processRepository.deleteById(id);
+    @Transactional
+    public Process toggleActive(Long id){
+        Process process = processRepository.findById(id).orElse(null);
+        if(process != null){
+            process.setModifiedatetime(LocalDateTime.now());
+            process.setActive(!process.isActive());
         }
-        else{
-            throw new IllegalStateException("Process with id:"+id+", does not exist.");
-        }
+        return process;
     }
 }
