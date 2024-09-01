@@ -185,6 +185,5 @@ public class Agent {
     public void setTxnstatus(boolean txnstatus) {
         this.txnstatus = txnstatus;
     }
-
-    
+        
 }

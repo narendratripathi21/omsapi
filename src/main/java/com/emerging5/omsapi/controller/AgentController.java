@@ -56,9 +56,15 @@ public class AgentController {
     }
 
     @PostMapping(path="/updateAgent/{id}")
-    public void updateAgent(@PathVariable Long id, @RequestParam(required = false) String hostname, @RequestParam(required = false) String currentversion){
+    public Agent updateAgent(@PathVariable Long id, @RequestParam(required = false) String hostname, @RequestParam(required = false) String currentversion){
         logger.info("Hostname:{}|CurrentVersion:{}",hostname,currentversion);
-        agentService.updateAgent(id, hostname, currentversion);
+        return agentService.updateAgent(id, hostname, currentversion);
+    }
+    
+    @PostMapping("/setTasks/{id}")
+    public List<Task> seTasks(@PathVariable Long id, @RequestBody List<Task> tasks) {
+        logger.info("tasks:{}",tasks);  
+        return agentService.setTasks(id, tasks);
     }
     
     @PostMapping(path="/setAgentProps/{id}")
@@ -67,8 +73,8 @@ public class AgentController {
     }
 
     @PostMapping(path="/toggleActive/{id}")
-    public void toggleActive(@PathVariable Long id){
-        agentService.toggleActive(id);
+    public Agent toggleActive(@PathVariable Long id){
+        return agentService.toggleActive(id);
     }
     
 }

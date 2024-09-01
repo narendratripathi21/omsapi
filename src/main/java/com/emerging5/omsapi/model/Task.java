@@ -1,15 +1,15 @@
 package com.emerging5.omsapi.model;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -32,12 +32,18 @@ public class Task {
     @ManyToOne
     @JoinColumn(name="agentid")
     private Agent agent;
-    @ManyToMany
-    private List<Process> processes;
+    @ManyToOne
+    @JoinColumn(name="processid")
+    private Process process;
     private Long dependsonTaskid;
     private int status;
     private String msg;
     private boolean active;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Trigger trigger;
+    private LocalDateTime createddatetime;
+    private LocalDateTime modifieddatetime;
+    private LocalDateTime lastrundatetime;
 
     @Transient
     private String message;
@@ -64,7 +70,6 @@ public class Task {
         this.txnstatus = status;
     }
     
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -101,6 +106,32 @@ public class Task {
     public void setAgent(Agent agent) {
         this.agent = agent;
     }
+    public void setProcess(Process process) {
+        this.process = process;
+    }
+    public LocalDateTime getCreateddatetime() {
+        return createddatetime;
+    }
+
+    public void setCreateddatetime(LocalDateTime createddatetime) {
+        this.createddatetime = createddatetime;
+    }
+
+    public LocalDateTime getModifieddatetime() {
+        return modifieddatetime;
+    }
+
+    public void setModifieddatetime(LocalDateTime modifieddatetime) {
+        this.modifieddatetime = modifieddatetime;
+    }
+
+    public LocalDateTime getLastrundatetime() {
+        return lastrundatetime;
+    }
+
+    public void setLastrundatetime(LocalDateTime lastrundatetime) {
+        this.lastrundatetime = lastrundatetime;
+    }
 
     public String getMessage() {
         return message;
@@ -116,7 +147,15 @@ public class Task {
 
     public void setTxnstatus(boolean txnstatus) {
         this.txnstatus = txnstatus;
-    }   
+    }
 
+    public Trigger getTrigger() {
+        return trigger;
+    }
+
+    public void setTrigger(Trigger trigger) {
+        this.trigger = trigger;
+    }   
+    
     
 }

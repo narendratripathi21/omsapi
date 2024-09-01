@@ -8,8 +8,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -33,8 +34,9 @@ public class Process {
     @OneToOne(cascade = CascadeType.ALL)
     private Trigger trigger;
     
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "processes")
-    private List<Task> tasks;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="processid",referencedColumnName = "id")
+    private List<Task> tasks; 
     private boolean status;
     private boolean active;
     private String msg;

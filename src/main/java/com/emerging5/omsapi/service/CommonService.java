@@ -22,17 +22,17 @@ public class CommonService {
     public static String getMessage(String type, Class cs, String error){
         switch (type) {
             case "created":
-                return cs.getName() + " created successfully. ";
+                return cs.getSimpleName() + " created successfully. ";
             case "updated":
-                return cs.getName() + " updated successfully. ";
+                return cs.getSimpleName() + " updated successfully. ";
             case "completed":
-                return cs.getName() + " completed successfully. ";
+                return cs.getSimpleName() + " completed successfully. ";
             case "missing":
-                return "transaction failed, as "+ cs.getName() + " not found!";
+                return "transaction failed, as "+ cs.getSimpleName() + " not found!";
             case "invalid":
-                return cs.getName() + ", transaction failed, due to invalid params";
+                return cs.getSimpleName() + ", transaction failed, due to invalid params";
             default:
-                return cs.getName() + " completed successfully ";
+                return cs.getSimpleName() + " completed successfully ";
         }
     }
 

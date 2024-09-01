@@ -118,6 +118,5 @@ public class Trigger {
     public void setTxnstatus(boolean txnstatus) {
         this.txnstatus = txnstatus;
     }
-
     
 }

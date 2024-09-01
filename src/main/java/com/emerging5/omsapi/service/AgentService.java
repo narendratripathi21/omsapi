@@ -16,9 +16,11 @@ import jakarta.transaction.Transactional;
 public class AgentService {
     
     public final AgentRepository agentRepository;
+    public final TaskService taskService;
     
-    public AgentService(AgentRepository agentRepository){
+    public AgentService(AgentRepository agentRepository, TaskService taskService){
         this.agentRepository = agentRepository;
+        this.taskService = taskService;
     }
   
     public List<Agent> getAgents(){
@@ -37,22 +39,36 @@ public class AgentService {
         Agent tempAgent = new Agent();
         agent.setRegistereddatetime(LocalDateTime.now());
         agent.setLastactivedatetime(LocalDateTime.now());
-        tempAgent = agentRepository.save(agent);
-        //tempAgent.setTxnstatus(true);
-        //tempAgent.setMessage(CommonService.getMessage("created",this.getClass(),""));
+        try{
+            tempAgent = agentRepository.save(agent);
+            tempAgent.setTxnstatus(true);
+            tempAgent.setMessage(CommonService.getMessage("created",agent.getClass(),""));
+        }
+        catch(Exception ex){
+            tempAgent.setTxnstatus(false);
+            tempAgent.setMessage(CommonService.getMessage("invalid",agent.getClass(),ex.getMessage()));
+        }
         return tempAgent;
     }
 
     @Transactional
     public Agent updateAgent(Long id,String hostname,  String currentversion){
-        Agent agent = agentRepository.findById(id).orElse(null);
-        if(agent!=null && hostname!=null && CommonService.isValidString(hostname) && !Objects.equals(agent.getHostname(),hostname)){
+        Agent agent = agentRepository.findById(id).orElse(new Agent());
+        if(hostname!=null && CommonService.isValidString(hostname) && !Objects.equals(agent.getHostname(),hostname)){
             agent.setHostname(hostname);
             agent.setLastupdatedatetime(LocalDateTime.now());
+            agent.setTxnstatus(true);
+            agent.setMessage(CommonService.getMessage("updated", agent.getClass(), ""));
         }
-        if(agent!=null && currentversion!=null && CommonService.isValidString(currentversion) && !Objects.equals(agent.getCurrentversion(),currentversion)){
+        if(currentversion!=null && CommonService.isValidString(currentversion) && !Objects.equals(agent.getCurrentversion(),currentversion)){
             agent.setCurrentversion(currentversion);
             agent.setLastupdatedatetime(LocalDateTime.now());
+            agent.setTxnstatus(true);
+            agent.setMessage(CommonService.getMessage("updated", agent.getClass(), ""));
+        }
+        else{
+            agent.setTxnstatus(false);
+            agent.setMessage(CommonService.getMessage("invalid", agent.getClass(), ""));
         }
         return agent;
     }
@@ -86,4 +102,23 @@ public class AgentService {
         return null;
     }
 
+    @Transactional
+    public List<Task> setTasks(Long id, List<Task> tasks){
+        Agent agent = getAgent(id);
+        if(agent!=null){
+            for (Task task : tasks) {
+
+                if(task.getId() != null){
+                    task.setAgent(agent);
+                }
+                else{
+                    Task tsk = taskService.getTaskByName(task.getName());
+                    tsk = tsk!=null?tsk:taskService.addTask(task);
+                    tsk.setAgent(agent);
+                }
+            }
+            return agent.getTasks();
+        }
+        return null;
+    }
 }
