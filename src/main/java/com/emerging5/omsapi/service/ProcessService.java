@@ -47,10 +47,11 @@ public class ProcessService {
         }
     }
 
+    @Transactional
     public void updateProcess(Long id, String name){
-        Process temProcess = processRepository.findById(id).orElse(null);
-        if(temProcess != null){
-
+        Process process = processRepository.findById(id).orElse(null);
+        if(process != null){
+            
         }
     }
 

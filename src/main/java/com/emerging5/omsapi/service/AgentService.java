@@ -107,7 +107,6 @@ public class AgentService {
         Agent agent = getAgent(id);
         if(agent!=null){
             for (Task task : tasks) {
-
                 if(task.getId() != null){
                     task.setAgent(agent);
                 }

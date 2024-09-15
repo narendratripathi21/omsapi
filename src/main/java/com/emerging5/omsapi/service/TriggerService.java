@@ -31,6 +31,22 @@ public class TriggerService {
         return triggerRepository.findByName(name).stream().findFirst().orElse(null);
     }
 
+    public Trigger addTrigger(Trigger trigger){
+        Trigger tempTrigger = new Trigger();
+        trigger.setCreateddatetime(LocalDateTime.now());
+        trigger.setActive(true);
+        try{
+            tempTrigger = triggerRepository.save(trigger);
+            tempTrigger.setTxnstatus(true);
+            tempTrigger.setMessage(CommonService.getMessage("added", trigger.getClass(), ""));
+        }
+        catch(Exception ex){
+            tempTrigger.setTxnstatus(false);
+            tempTrigger.setMessage(CommonService.getMessage("failed", trigger.getClass(), ex.getMessage()));
+        }
+        return tempTrigger;
+    }
+
     @Transactional
     public void toggleActive(Long id){
         Trigger trigger = triggerRepository.findById(id).orElse(null);

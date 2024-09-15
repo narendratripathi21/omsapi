@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.emerging5.omsapi.model.Task;
 import com.emerging5.omsapi.model.TaskRepository;
 import com.emerging5.omsapi.model.Trigger;
+import com.emerging5.omsapi.model.TriggerRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -15,9 +16,11 @@ import jakarta.transaction.Transactional;
 public class TaskService {
     
     private final TaskRepository taskRepository;
+    private final TriggerService triggerService;
 
-    public TaskService(TaskRepository taskRepository){
+    public TaskService(TaskRepository taskRepository, TriggerService triggerService){
         this.taskRepository = taskRepository;
+        this.triggerService = triggerService;
     }
 
     public List<Task> getTasks(){
@@ -48,6 +51,16 @@ public class TaskService {
         Task task = taskRepository.findById(id).orElse(null);
         if(task!=null && CommonService.isValidString(name) && !task.getName().equals(name)){
             task.setName(name);
+        }
+        if(task!=null && (CommonService.isValidCron(trigger.getCronString()) || CommonService.isValidString(trigger.getObservePath()))){
+            if(trigger.getId()!=null){
+                task.setTrigger(trigger);
+            }
+            else{
+                Trigger trig = triggerService.getTriggerByName(trigger.getName());
+                trig = trig!=null?trig:triggerService.addTrigger(trig);
+                task.setTrigger(trig);
+            }
         }
         return task;
     }
