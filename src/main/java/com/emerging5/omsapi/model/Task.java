@@ -10,7 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -18,14 +17,8 @@ import jakarta.persistence.Transient;
 @Table
 public class Task {
     @Id
-    @SequenceGenerator(
-        name="task_id_sequence",
-        sequenceName = "task_id_sequence",
-        allocationSize = 1
-    )
     @GeneratedValue(
-        strategy = GenerationType.SEQUENCE,
-        generator = "task_id_sequence"
+        strategy = GenerationType.IDENTITY
     )
     private Long id;
     private String name;
@@ -40,7 +33,7 @@ public class Task {
     private String msg;
     private boolean active;
     @OneToOne(cascade = CascadeType.ALL)
-    private Trigger trigger;
+    private Triggar trigger;
     private LocalDateTime createddatetime;
     private LocalDateTime modifieddatetime;
     private LocalDateTime lastrundatetime;
@@ -149,11 +142,11 @@ public class Task {
         this.txnstatus = txnstatus;
     }
 
-    public Trigger getTrigger() {
+    public Triggar getTrigger() {
         return trigger;
     }
 
-    public void setTrigger(Trigger trigger) {
+    public void setTrigger(Triggar trigger) {
         this.trigger = trigger;
     }   
     

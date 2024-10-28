@@ -6,23 +6,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
 @Entity
 @Table
-public class Trigger {
-
+public class Triggar {
     @Id
-    @SequenceGenerator(
-        name="trigger_id_sequence",
-        sequenceName = "trigger_id_sequence",
-        allocationSize = 1
-    )
     @GeneratedValue(
-        strategy = GenerationType.SEQUENCE,
-        generator = "trigger_id_sequence"
+        strategy = GenerationType.IDENTITY
     )
     private Long id;
     private String name;
@@ -38,10 +30,11 @@ public class Trigger {
     @Transient
     private boolean txnstatus;
     
-    public Trigger() {
+    public Triggar() {
+        
     }
     
-    public Trigger(Long id, String name, String observePath, String cronString) {
+    public Triggar(Long id, String name, String observePath, String cronString) {
         this.id = id;
         this.name = name;
         this.observePath = observePath;
@@ -49,7 +42,7 @@ public class Trigger {
         this.active = true;
     }
 
-    public Trigger(String message, boolean status){
+    public Triggar(String message, boolean status){
         this.message = message;
         this.txnstatus = status;
     }

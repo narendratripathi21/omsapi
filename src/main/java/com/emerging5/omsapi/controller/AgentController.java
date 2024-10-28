@@ -1,11 +1,5 @@
 package com.emerging5.omsapi.controller;
 
-import org.springframework.web.bind.annotation.RestController;
-
-import com.emerging5.omsapi.model.Agent;
-import com.emerging5.omsapi.model.Task;
-import com.emerging5.omsapi.service.AgentService;
-
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -17,13 +11,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.emerging5.omsapi.model.Agent;
+import com.emerging5.omsapi.model.Task;
+import com.emerging5.omsapi.service.AgentService;
 
 
 @RestController
 @RequestMapping(path="/api/agent")
 public class AgentController {
 
-    private Logger logger = LoggerFactory.getLogger(AgentController.class);
+    private final Logger logger = LoggerFactory.getLogger(AgentController.class);
     private final AgentService agentService;
 
     public AgentController(AgentService agentService){

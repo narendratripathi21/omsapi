@@ -50,7 +50,7 @@ public class ProcessService {
     @Transactional
     public void updateProcess(Long id, String name){
         Process process = processRepository.findById(id).orElse(null);
-        if(process != null && !processRepository.findByName(name)){
+        if(process != null && processRepository.findByName(name).isEmpty()){
             process.setName(name);
         }
     }

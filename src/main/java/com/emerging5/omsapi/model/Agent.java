@@ -10,27 +10,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Transient;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(
     uniqueConstraints = @UniqueConstraint(columnNames = {"hostname"})
 )
 public class Agent {
-            
-    @SequenceGenerator(
-        name="agent_id_sequence",
-        sequenceName = "agent_id_sequence",
-        allocationSize = 1
-    )
+    @Id    
     @GeneratedValue(
-        strategy = GenerationType.SEQUENCE,
-        generator = "agent_id_sequence"
-    )
-    @Id
+        strategy = GenerationType.IDENTITY
+    )    
     private Long id;
     private String hostname;
     private boolean active;

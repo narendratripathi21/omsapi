@@ -7,8 +7,8 @@ import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 import com.emerging5.omsapi.model.Agent;
-import com.emerging5.omsapi.model.Task;
 import com.emerging5.omsapi.model.AgentRepository;
+import com.emerging5.omsapi.model.Task;
 
 import jakarta.transaction.Transactional;
 
@@ -42,11 +42,11 @@ public class AgentService {
         try{
             tempAgent = agentRepository.save(agent);
             tempAgent.setTxnstatus(true);
-            tempAgent.setMessage(CommonService.getMessage("created",agent.getClass(),""));
+            tempAgent.setMessage(CommonService.getMessage("created","agent",""));
         }
         catch(Exception ex){
             tempAgent.setTxnstatus(false);
-            tempAgent.setMessage(CommonService.getMessage("invalid",agent.getClass(),ex.getMessage()));
+            tempAgent.setMessage(CommonService.getMessage("invalid","agent",ex.getMessage()));
         }
         return tempAgent;
     }
@@ -58,17 +58,17 @@ public class AgentService {
             agent.setHostname(hostname);
             agent.setLastupdatedatetime(LocalDateTime.now());
             agent.setTxnstatus(true);
-            agent.setMessage(CommonService.getMessage("updated", agent.getClass(), ""));
+            agent.setMessage(CommonService.getMessage("updated", "agent", ""));
         }
         if(currentversion!=null && CommonService.isValidString(currentversion) && !Objects.equals(agent.getCurrentversion(),currentversion)){
             agent.setCurrentversion(currentversion);
             agent.setLastupdatedatetime(LocalDateTime.now());
             agent.setTxnstatus(true);
-            agent.setMessage(CommonService.getMessage("updated", agent.getClass(), ""));
+            agent.setMessage(CommonService.getMessage("updated", "agent", ""));
         }
         else{
             agent.setTxnstatus(false);
-            agent.setMessage(CommonService.getMessage("invalid", agent.getClass(), ""));
+            agent.setMessage(CommonService.getMessage("invalid", "agent", ""));
         }
         return agent;
     }

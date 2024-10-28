@@ -9,9 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -19,20 +18,14 @@ import jakarta.persistence.Transient;
 @Table
 public class Process {
     @Id
-    @SequenceGenerator(
-        name="process_id_sequence",
-        sequenceName = "process_id_sequence",
-        allocationSize = 1
-    )
     @GeneratedValue(
-        strategy = GenerationType.SEQUENCE,
-        generator = "process_id_sequence"
+        strategy = GenerationType.IDENTITY
     )
     private Long id;
     private String name;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private Trigger trigger;
+    private Triggar trigger;
     
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="processid",referencedColumnName = "id")
@@ -55,7 +48,7 @@ public class Process {
     public Process() {
     }
 
-    public Process(Long id, String name, Trigger trigger, List<Task> tasks, boolean status, String msg) {
+    public Process(Long id, String name, Triggar trigger, List<Task> tasks, boolean status, String msg) {
         this.id = id;
         this.name = name;
         this.trigger = trigger;
@@ -81,10 +74,10 @@ public class Process {
     public void setName(String name) {
         this.name = name;
     }
-    public Trigger getTrigger() {
+    public Triggar getTrigger() {
         return trigger;
     }
-    public void setTrigger(Trigger trigger) {
+    public void setTrigger(Triggar trigger) {
         this.trigger = trigger;
     }
     public List<Task> getTasks() {

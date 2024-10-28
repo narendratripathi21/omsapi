@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.emerging5.omsapi.model.Task;
 import com.emerging5.omsapi.model.TaskRepository;
-import com.emerging5.omsapi.model.Trigger;
-import com.emerging5.omsapi.model.TriggerRepository;
+import com.emerging5.omsapi.model.Triggar;
 
 import jakarta.transaction.Transactional;
 
@@ -16,9 +15,9 @@ import jakarta.transaction.Transactional;
 public class TaskService {
     
     private final TaskRepository taskRepository;
-    private final TriggerService triggerService;
+    private final TriggarService triggerService;
 
-    public TaskService(TaskRepository taskRepository, TriggerService triggerService){
+    public TaskService(TaskRepository taskRepository, TriggarService triggerService){
         this.taskRepository = taskRepository;
         this.triggerService = triggerService;
     }
@@ -37,17 +36,17 @@ public class TaskService {
         try{
             tempTask = taskRepository.save(task);
             tempTask.setTxnstatus(true);
-            tempTask.setMessage(CommonService.getMessage("created", task.getClass(), ""));
+            tempTask.setMessage(CommonService.getMessage("created", "task", ""));
         }
         catch(Exception ex){
             tempTask.setTxnstatus(false);
-            tempTask.setMessage(CommonService.getMessage("invalid", task.getClass(), ex.getMessage()));
+            tempTask.setMessage(CommonService.getMessage("invalid", "task", ex.getMessage()));
         }
         return tempTask;
     }
 
     @Transactional
-    public Task update(Long id, String name, Trigger trigger){
+    public Task update(Long id, String name, Triggar trigger){
         Task task = taskRepository.findById(id).orElse(null);
         if(task!=null && CommonService.isValidString(name) && !task.getName().equals(name)){
             task.setName(name);
@@ -57,7 +56,7 @@ public class TaskService {
                 task.setTrigger(trigger);
             }
             else{
-                Trigger trig = triggerService.getTriggerByName(trigger.getName());
+                Triggar trig = triggerService.getTriggerByName(trigger.getName());
                 trig = trig!=null?trig:triggerService.addTrigger(trig);
                 task.setTrigger(trig);
             }

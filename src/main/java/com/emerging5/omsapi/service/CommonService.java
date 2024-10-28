@@ -19,21 +19,15 @@ public class CommonService {
         return true;
     }
 
-    public static String getMessage(String type, Class cs, String error){
-        switch (type) {
-            case "created":
-                return cs.getSimpleName() + " created successfully. ";
-            case "updated":
-                return cs.getSimpleName() + " updated successfully. ";
-            case "completed":
-                return cs.getSimpleName() + " completed successfully. ";
-            case "missing":
-                return "transaction failed, as "+ cs.getSimpleName() + " not found!";
-            case "invalid":
-                return cs.getSimpleName() + ", transaction failed, due to invalid params";
-            default:
-                return cs.getSimpleName() + " completed successfully ";
-        }
+    public static String getMessage(String type, String clsname, String error){
+        return switch (type) {
+            case "created" -> clsname + " created successfully. ";
+            case "updated" -> clsname + " updated successfully. ";
+            case "completed" -> clsname + " completed successfully. ";
+            case "missing" -> "transaction failed, as "+ clsname + " not found!";
+            case "invalid" -> clsname + ", transaction failed, due to invalid params/values";
+            default -> clsname + " completed successfully ";
+        };
     }
 
     public static enum objectTxnStatus{

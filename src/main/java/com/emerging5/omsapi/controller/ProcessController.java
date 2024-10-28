@@ -1,19 +1,19 @@
 package com.emerging5.omsapi.controller;
 
-import org.springframework.web.bind.annotation.RestController;
-
-import com.emerging5.omsapi.service.ProcessService;
-import com.emerging5.omsapi.model.Process;
-import com.emerging5.omsapi.model.Trigger;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import java.util.List;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.emerging5.omsapi.model.Process;
+import com.emerging5.omsapi.model.Triggar;
+import com.emerging5.omsapi.service.ProcessService;
 
 @RestController
 @RequestMapping(path="/api/process")
@@ -29,15 +29,15 @@ public class ProcessController {
         return processService.getProcesses();
     }
 
-    @PutMapping(path="/updateProcess/{id}")
-    public void updateProcess(@PathVariable Long id
-    , @RequestParam String name,@RequestBody Trigger trigger) {
-        
-    }
-
     @PostMapping("/addProcess")
     public Process addProcess(@RequestBody Process process) {
         return processService.addProcess(process);
+    }
+
+    @PutMapping(path="/updateProcess/{id}")
+    public void updateProcess(@PathVariable Long id
+    , @RequestParam String name,@RequestBody Triggar trigger) {
+        
     }
 
     @PostMapping("/toggleActive/{id}")
